@@ -168,18 +168,21 @@
 
             // --- HELPER FUNCTIONS ---
             
-            /**
-             * Calculates the week number for a given date.
-             * @param {Date} d - The date object.
-             * @returns {number} The week number.
-             */
-            const getWeekNumber = (d) => {
-                d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-                d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
-                const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-                const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
-                return weekNo;
-            };
+          /**
+          * Calculates the week number for a given date within its month.
+          * @param {Date} d - The date object.
+          * @returns {number} The week number of the month (1-5).
+          */
+             const getWeekNumber = (d) => {
+                 // Get the day of the month (e.g., 25th)
+                 const date = d.getDate();
+                 // Get the day of the week for the first day of the month (0=Sunday, 1=Monday...)
+                 const firstDay = new Date(d.getFullYear(), d.getMonth(), 1).getDay();
+                 // The week number is calculated by adding the date to the first day's offset, 
+                 // dividing by 7, and rounding up.
+                 const weekNo = Math.ceil((date + firstDay) / 7);
+                 return weekNo;
+             };
 
             /**
              * Parses time from "HH:mm" format to minutes from midnight.
